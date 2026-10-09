@@ -1,0 +1,133 @@
+/* Intro della pagina iniziale: la & si disegna, R arriva da sinistra, F da destra, poi la tendina sale. */
+.splash {
+  display: none;
+}
+html.intro {
+  overflow: hidden;
+}
+html.intro .splash {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  background: var(--verde);
+  cursor: pointer;
+  transition: transform 0.6s cubic-bezier(0.7, 0, 0.3, 1);
+}
+html.intro--out .splash {
+  transform: translateY(-100%);
+}
+.splash__stage {
+  display: grid;
+  justify-items: center;
+  gap: var(--s4);
+  width: min(78vw, 420px);
+}
+.splash__logo {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  animation: logo-pop 0.45s 1.25s cubic-bezier(0.3, 1.6, 0.5, 1) both;
+}
+.splash__r {
+  animation: in-left 0.6s 0.55s cubic-bezier(0.2, 1.4, 0.4, 1) both;
+}
+.splash__f {
+  animation: in-right 0.6s 0.68s cubic-bezier(0.2, 1.4, 0.4, 1) both;
+}
+.splash__amp path {
+  fill: #e10814;
+  fill-opacity: 0;
+  stroke: #e10814;
+  stroke-width: 4;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: amp-draw 0.7s 0.05s ease-out forwards, amp-fill 0.35s 0.6s ease-out forwards;
+}
+.splash__tag {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(18px, 5vw, 26px);
+  color: #fff;
+  letter-spacing: 0.02em;
+  animation: tag-in 0.45s 1.35s ease-out both;
+}
+.splash__band {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: calc(var(--cell) * 2);
+  border-top: 4px solid var(--arancio);
+  background-color: #fff;
+  background-image: conic-gradient(var(--verde) 25%, #fff 0 50%, var(--verde) 0 75%, #fff 0);
+  background-size: calc(var(--cell) * 2) calc(var(--cell) * 2);
+  animation: band-in 0.7s 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes amp-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes amp-fill {
+  to {
+    fill-opacity: 1;
+    stroke-width: 0;
+  }
+}
+@keyframes in-left {
+  from {
+    transform: translateX(-260px) rotate(-12deg);
+    opacity: 0;
+  }
+  40% {
+    opacity: 1;
+  }
+}
+@keyframes in-right {
+  from {
+    transform: translateX(260px) rotate(12deg);
+    opacity: 0;
+  }
+  40% {
+    opacity: 1;
+  }
+}
+@keyframes logo-pop {
+  0% {
+    transform: scale(1);
+  }
+  45% {
+    transform: scale(1.08) rotate(-2deg);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes tag-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+@keyframes band-in {
+  from {
+    background-position: -400px 0;
+    transform: translateY(100%);
+  }
+}
+.splash__r,
+.splash__f {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.splash__logo {
+  transform-origin: center;
+}
+@media (prefers-reduced-motion: reduce) {
+  .splash {
+    display: none !important;
+  }
+}

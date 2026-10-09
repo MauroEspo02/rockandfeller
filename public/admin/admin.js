@@ -186,7 +186,7 @@ function viewProducts(el) {
     renderView();
   });
   el.querySelector("#newcat").addEventListener("click", () =>
-    editCategory({ name: "", color: "#9e1c1f", item_color: "#0c5636", note: "", show_in_menu: prodFilter === "menu", show_in_componi: prodFilter === "componi", componi_label: "", componi_role: "filling", componi_max: 0, visible: true })
+    editCategory({ name: "", layout: "list", color: "#9e1c1f", item_color: "#0c5636", note: "", show_in_menu: prodFilter === "menu", show_in_componi: prodFilter === "componi", componi_label: "", componi_role: "filling", componi_max: 0, visible: true })
   );
 
   el.onclick = async (e) => {
@@ -550,6 +550,7 @@ function editCategory(c) {
     ${field("Nota accanto al titolo", `<input name="note" value="${esc(c.note)}" placeholder="es. aggiungi 3,50€ per avere il menù" maxlength="160">`)}
     <div class="fld"><span class="fld__l">Colore del titolo</span>${swatches("color", c.color)}</div>
     <div class="fld"><span class="fld__l">Colore dei nomi dei prodotti</span>${swatches("item_color", c.item_color)}</div>
+    ${field("Aspetto nel menù", `<select name="layout"><option value="list" ${c.layout !== "combo" ? "selected" : ""}>Normale (elenco)</option><option value="combo" ${c.layout === "combo" ? "selected" : ""}>Riquadro offerta (come il menù bambini)</option></select>`, "Nel riquadro i prodotti diventano le scelte e la nota diventa \"& …\". Se hanno tutti lo stesso prezzo compare \"solo X€\".")}
     <div class="chks">
       ${check("show_in_menu", "Mostra nel menù", c.show_in_menu)}
       ${check("show_in_componi", "Mostra nel Componi tu", c.show_in_componi)}
@@ -575,6 +576,7 @@ function editCategory(c) {
         componi_label: f.componi_label.value,
         componi_role: f.componi_role.value,
         componi_max: Number(f.componi_max.value || 0),
+        layout: f.layout.value,
       };
       if (isNew) await api("POST", "/api/admin/res/categories", body);
       else await api("PUT", `/api/admin/res/categories/${c.id}`, body);

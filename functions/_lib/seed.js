@@ -100,10 +100,8 @@ const CATEGORIES = [
     ],
   },
   {
-    name: "Menù bambini", color: C.rosso, item_color: C.verde, note: "con bibita e patatine",
-    items: [
-      ["Cotoletta, hamburger, nuggets o toast", 6, { description: "Scegli tra cotoletta, hamburger, nuggets o toast. Con bibita e patatine." }],
-    ],
+    name: "Menù bambini", color: C.rosso, item_color: C.verde, note: "bibita e patatine",
+    items: [["Cotoletta", 6], ["Hamburger", 6], ["Nuggets", 6], ["Toast", 6]],
   },
   // Sezioni del "Componi tu": non compaiono nel menù, solo nella pagina /componi
   {
@@ -299,3 +297,20 @@ export const DEFAULT_GRATTA = {
   valid_days: 7,
   prize: "10% di sconto sul panino del mese",
 };
+
+// Aggiornamento 3: aspetto "riquadro" per le categorie; il menù bambini lo usa e diventa 4 scelte.
+export async function seedV3(db) {
+  const kids = await db.prepare("SELECT id FROM categories WHERE name = ?").bind("Menù bambini").first();
+  if (!kids) return;
+  await db.prepare("UPDATE categories SET layout = 'combo' WHERE id = ?").bind(kids.id).run();
+  await db.prepare("UPDATE categories SET note = 'bibita e patatine' WHERE id = ? AND note = 'con bibita e patatine'").bind(kids.id).run();
+  const { results } = await db.prepare("SELECT id, name FROM items WHERE category_id = ?").bind(kids.id).all();
+  if (results.length === 1 && results[0].name === "Cotoletta, hamburger, nuggets o toast") {
+    await db.batch([
+      db.prepare("DELETE FROM items WHERE id = ?").bind(results[0].id),
+      ...["Cotoletta", "Hamburger", "Nuggets", "Toast"].map((n, i) =>
+        db.prepare("INSERT INTO items (category_id, name, price_cents, sort) VALUES (?, ?, 600, ?)").bind(kids.id, n, (i + 1) * 10)
+      ),
+    ]);
+  }
+}

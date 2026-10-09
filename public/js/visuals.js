@@ -476,7 +476,7 @@ function can(x, yBottom, color) {
  * base: item del pane (o null), layers: [{ key, visual, seed }], drinks: [{ visual }]
  * newKey: chiave dello strato appena aggiunto (cade dall'alto)
  */
-export function drawSandwich({ base, layers, drinks = [], newKey = null }) {
+export function drawSandwich({ base, layers, drinks = [], newKey = null, face = false, fries = false }) {
   const baseKind = base ? parseVisual(base.visual).kind : null;
   const w = baseWidth(baseKind);
   const parts = [];
@@ -517,6 +517,7 @@ export function drawSandwich({ base, layers, drinks = [], newKey = null }) {
     const r = rng(99);
     const top = baseTop(baseKind, 0, w, r);
     parts.push({ z: 3, svg: `<g transform="translate(0 ${f(y)})">${top.svg}</g>`, key: "top", isTop: true });
+    if (face) parts.push({ z: 3.5, svg: `<g transform="translate(0 ${f(y - top.h)})">${faceSvg(top.h)}</g>`, key: "face" });
     y -= top.h;
   }
   if (baseKind === "tray") {
@@ -531,9 +532,11 @@ export function drawSandwich({ base, layers, drinks = [], newKey = null }) {
     parts.push({ z: 5, svg: can(canX + i * 22 - (drinks.length > 1 ? 30 : 0), 4, v.color), key: d.key, isNew: newKey === d.key });
   });
 
+  if (fries) parts.push({ z: 4, svg: friesBox(CX - w / 2 - 70, 4), key: "fries" });
   const top = Math.min(y, -120) - 30;
   const extraRight = drinks.length ? 90 : 0;
-  const minX = -20, width = W + 40 + extraRight;
+  const extraLeft = fries ? 70 : 0;
+  const minX = -20 - extraLeft, width = W + 40 + extraRight + extraLeft;
   const height = -top + 30;
   const body = parts
     .sort((a, b) => a.z - b.z)
@@ -545,4 +548,31 @@ export function drawSandwich({ base, layers, drinks = [], newKey = null }) {
     })
     .join("");
   return { svg: `<svg viewBox="${minX} ${f(top)} ${width} ${f(height)}" xmlns="http://www.w3.org/2000/svg" role="img">${body}</svg>`, height, width };
+}
+
+// Faccina sul panino (menù bambini), nello stile dei disegni del poster: bianco con contorno verde.
+function faceSvg(h) {
+  const ey = h * 0.42;
+  const eye = (x) =>
+    `<ellipse cx="${x}" cy="${ey}" rx="11" ry="14" fill="#fff" stroke="#155634" stroke-width="4"/><circle cx="${x + 2}" cy="${ey + 3}" r="4.5" fill="#155634"/>`;
+  return `<g class="face">${eye(CX - 30)}${eye(CX + 30)}
+    <path d="M${CX - 28} ${f(h * 0.7)} Q${CX} ${f(h * 0.98)} ${CX + 28} ${f(h * 0.7)}" stroke="#155634" stroke-width="5" fill="#fff" stroke-linecap="round" stroke-linejoin="round"/></g>`;
+}
+
+// Cartoccio di patatine accanto al panino
+function friesBox(x, yBottom) {
+  const w = 74, h = 70;
+  const y = yBottom - h;
+  let s = "";
+  const cols = ["#f2c14e", "#e8b23a", "#f6cf63"];
+  for (let i = 0; i < 9; i++) {
+    const fx = x + 8 + i * 7.2;
+    const fh = 34 + ((i * 37) % 22);
+    s += `<rect x="${f(fx)}" y="${f(y - fh + 18)}" width="9" height="${fh}" rx="2" fill="${cols[i % 3]}" stroke="#c98a1f" stroke-width="1" transform="rotate(${(i - 4) * 3} ${f(fx + 4)} ${y + 20})"/>`;
+  }
+  s += `<path d="M${x} ${y + 12} L${x + w} ${y + 12} L${x + w - 8} ${yBottom} L${x + 8} ${yBottom} Z" fill="#e10814"/>
+        <path d="M${x} ${y + 12} Q${x + w / 2} ${y + 28} ${x + w} ${y + 12}" fill="#c00a12"/>
+        <path d="M${x + w / 2 - 12} ${y + 40} q12 10 24 0" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round"/>
+        <circle cx="${x + w / 2 - 12}" cy="${y + 32}" r="3.5" fill="#fff"/><circle cx="${x + w / 2 + 12}" cy="${y + 32}" r="3.5" fill="#fff"/>`;
+  return s;
 }

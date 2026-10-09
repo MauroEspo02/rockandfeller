@@ -316,3 +316,170 @@
     column-gap: var(--s7);
   }
 }
+
+/* ---------- riquadro offerta (menù bambini) ---------- */
+.cat--combo {
+  padding-top: var(--s8);
+}
+.combo {
+  position: relative;
+  display: grid;
+  grid-template-areas: "band" "title" "art" "text" "price";
+  background: #fff;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 0 0 3px var(--c), 0 14px 0 -3px color-mix(in srgb, var(--c) 25%, transparent);
+}
+.combo__band {
+  grid-area: band;
+  height: calc(var(--cell) * 2);
+  border-bottom: 4px solid var(--arancio);
+}
+.combo__title {
+  grid-area: title;
+  margin: var(--s5) var(--s5) 0;
+  text-align: center;
+  font-size: clamp(54px, 16vw, 92px);
+  line-height: 0.82;
+}
+.combo__t1 {
+  display: block;
+  color: var(--ci);
+  transform: rotate(-4deg) translateX(-6%);
+}
+.combo__t2 {
+  display: block;
+  color: var(--c);
+  transform: rotate(2deg) translateX(8%);
+}
+.combo__art {
+  grid-area: art;
+  height: 200px;
+  margin: var(--s3) var(--s4) 0;
+  position: relative;
+}
+.combo__art::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 38%;
+  height: calc(var(--cell) * 3);
+  background-color: #fff;
+  background-image: conic-gradient(var(--verde) 25%, #fff 0 50%, var(--verde) 0 75%, #fff 0);
+  background-size: calc(var(--cell) * 2) calc(var(--cell) * 2);
+  opacity: 0.9;
+}
+.combo__art svg {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.combo__art .face {
+  animation: wink 4s ease-in-out infinite;
+  transform-origin: center;
+  transform-box: fill-box;
+}
+@keyframes wink {
+  0%,
+  92%,
+  100% {
+    transform: scaleY(1);
+  }
+  95% {
+    transform: scaleY(0.2);
+  }
+}
+.combo__text {
+  grid-area: text;
+  padding: var(--s4) var(--s5) var(--s5);
+  text-align: center;
+}
+.combo__choose {
+  margin: 0 0 var(--s3);
+  color: var(--c);
+  font-size: 34px;
+}
+.combo__chips {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--s2);
+}
+.combo__chips li {
+  padding: var(--s2) var(--s4);
+  border-radius: 999px;
+  background: var(--ci);
+  color: #fff;
+  font-family: var(--font-display);
+  font-size: 20px;
+  line-height: 1.1;
+}
+.combo__chips li .price {
+  color: #fff;
+  opacity: 0.85;
+  font-family: var(--font-body);
+  font-size: 15px;
+}
+.combo__chips li.is-off {
+  background: #bbb;
+  text-decoration: line-through;
+}
+.combo__chips .badge {
+  vertical-align: 2px;
+}
+.combo__plus {
+  margin: var(--s4) 0 0;
+  color: var(--ci);
+  font-size: clamp(26px, 7vw, 36px);
+  line-height: 1;
+}
+.combo__plus span {
+  color: var(--arancio);
+}
+.combo__price {
+  grid-area: price;
+  margin: 0;
+  padding: var(--s4) var(--s5);
+  background: var(--arancio);
+  text-align: center;
+}
+.combo__price span {
+  font-size: clamp(44px, 13vw, 64px);
+  color: var(--c);
+  display: inline-block;
+  transform: rotate(-2deg);
+}
+
+@media (min-width: 768px) {
+  .combo {
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      "band band"
+      "title title"
+      "art text"
+      "price price";
+    align-items: center;
+  }
+  .combo__art {
+    height: 260px;
+    margin: var(--s4) 0 var(--s4) var(--s5);
+  }
+  .combo__text {
+    text-align: left;
+  }
+  .combo__chips {
+    justify-content: flex-start;
+  }
+}
+@media (min-width: 1100px) {
+  .combo__title {
+    font-size: 104px;
+  }
+  .combo__art {
+    height: 300px;
+  }
+}

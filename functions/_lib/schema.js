@@ -115,4 +115,9 @@ export const MIGRATIONS = [
     ],
     seed: "v2",
   },
+  {
+    version: 3,
+    statements: [`ALTER TABLE categories ADD COLUMN layout TEXT NOT NULL DEFAULT 'list'`],
+    seed: "v3",
+  },
 ];

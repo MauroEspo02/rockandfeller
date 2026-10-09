@@ -92,6 +92,7 @@ export const RESOURCES = {
       if (has("componi_label")) out.componi_label = str(b.componi_label, "titolo nel componi", { max: 40 });
       if (has("componi_role")) out.componi_role = ["base", "filling", "drink"].includes(b.componi_role) ? b.componi_role : "filling";
       if (has("componi_max")) out.componi_max = int(b.componi_max, "massimo scelte", { max: 50 });
+      if (has("layout")) out.layout = b.layout === "combo" ? "combo" : "list";
       if (has("visible")) out.visible = bool(b.visible);
       return out;
     },

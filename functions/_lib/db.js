@@ -1,5 +1,5 @@
 import { MIGRATIONS } from "./schema.js";
-import { seedDatabase, seedV2, DEFAULT_SITE } from "./seed.js";
+import { seedDatabase, seedV2, seedV3, DEFAULT_SITE } from "./seed.js";
 
 let ready = null;
 
@@ -26,7 +26,7 @@ async function migrate(db) {
       // Solo chi riesce a inserire questa riga fa il seed: evita doppioni se arrivano due richieste insieme.
       const key = m.seed === true ? "seeded" : `seeded_${m.seed}`;
       const claim = await db.prepare("INSERT OR IGNORE INTO meta (key, value) VALUES (?, ?)").bind(key, String(Date.now())).run();
-      if (claim.meta && claim.meta.changes === 1) await (m.seed === true ? seedDatabase(db) : seedV2(db));
+      if (claim.meta && claim.meta.changes === 1) await ({ true: seedDatabase, v2: seedV2, v3: seedV3 }[m.seed])(db);
     }
     await db.prepare("INSERT INTO meta (key, value) VALUES ('schema_version', ?) ON CONFLICT(key) DO UPDATE SET value = excluded.value")
       .bind(String(m.version))
@@ -68,6 +68,7 @@ export function mapCategory(row) {
     componi_label: row.componi_label,
     componi_role: row.componi_role,
     componi_max: row.componi_max,
+    layout: row.layout || "list",
     visible: bool(row.visible),
     sort: row.sort,
   };

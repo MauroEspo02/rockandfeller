@@ -1,5 +1,6 @@
 import { esc, euro, richText, photo, loadPublic, showError, icon } from "./common.js";
 import { renderHead, renderFoot } from "./chrome.js";
+import { drawSandwich } from "./visuals.js";
 
 renderHead("/menu");
 
@@ -59,6 +60,45 @@ function compactItem(item, cat, potmId) {
     </li>`;
 }
 
+// Riquadro offerta (es. menù bambini): le voci sono le scelte, la nota è "& …", prezzo unico in fondo.
+function comboSection(c, potmId) {
+  const prices = [...new Set(c.items.map((i) => i.price_cents))];
+  const single = prices.length === 1 && prices[0] != null ? prices[0] : null;
+  const [first, ...rest] = c.name.split(" ");
+  const art = drawSandwich({
+    base: { visual: "bun" },
+    layers: [
+      { key: "a", visual: "lettuce", seed: 3 },
+      { key: "b", visual: "patty", seed: 5 },
+      { key: "c", visual: "cheese:#f6c544", seed: 7 },
+    ],
+    drinks: [{ key: "d", visual: "drink:#c8261e" }],
+    face: true,
+    fries: true,
+  }).svg;
+  return `
+    <section class="cat cat--combo" id="c${c.id}" style="--c:${esc(c.color)};--ci:${esc(c.item_color)}">
+      <h2 class="sr-only">${esc(c.name)}</h2>
+      <div class="combo">
+        <div class="combo__band checker" aria-hidden="true"></div>
+        <p class="combo__title display" aria-hidden="true"><span class="combo__t1">${esc(first)}</span> <span class="combo__t2">${esc(rest.join(" "))}</span></p>
+        <div class="combo__art" aria-hidden="true">${art}</div>
+        <div class="combo__text">
+          <p class="combo__choose display">Scegli tra</p>
+          <ul class="combo__chips">
+            ${c.items
+              .map(
+                (i) => `<li class="${i.available ? "" : "is-off"}" id="p${i.id}">${esc(i.name)}${single == null && i.price_cents != null ? ` <span class="price">${euro(i.price_cents)}</span>` : ""}${i.available ? "" : ` <span class="badge badge--off">esaurito</span>`}${i.id === potmId ? ` <span class="badge badge--potm">del mese</span>` : ""}</li>`
+              )
+              .join("")}
+          </ul>
+          ${c.note ? `<p class="combo__plus display"><span>&amp;</span> ${esc(c.note)}</p>` : ""}
+        </div>
+        ${single != null ? `<p class="combo__price"><span class="display">solo ${euro(single).replace(",00", "")}</span></p>` : ""}
+      </div>
+    </section>`;
+}
+
 function render(data) {
   const cats = data.categories.filter((c) => c.show_in_menu && c.items.length);
   const potmId = data.potm ? data.potm.item_id : null;
@@ -67,6 +107,7 @@ function render(data) {
     .join("");
 
   const sections = cats.map((c) => {
+    if (c.layout === "combo") return comboSection(c, potmId);
     const isFull = (i) => i.description || i.variants.length || i.image_id || i.prefix;
     const full = c.items.filter(isFull);
     const compact = c.items.filter((i) => !isFull(i));
