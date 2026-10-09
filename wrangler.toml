@@ -8,4 +8,4 @@ compatibility_date = "2026-01-01"
 [[d1_databases]]
 binding = "DB"
 database_name = "rockandfeller-db"
-database_id = "INCOLLA-QUI-IL-DATABASE-ID"
+database_id = "e3283bd0-5516-41b3-8f1a-fa850b97c75c"
