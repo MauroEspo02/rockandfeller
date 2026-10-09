@@ -126,8 +126,4 @@ html.intro--out .splash {
 .splash__logo {
   transform-origin: center;
 }
-@media (prefers-reduced-motion: reduce) {
-  .splash {
-    display: none !important;
-  }
-}
+

@@ -17,7 +17,8 @@
   <script>
     // Intro animata: una volta per visita, mai con "riduci movimento".
     try {
-      if (!sessionStorage.getItem("rf-intro") && !matchMedia("(prefers-reduced-motion: reduce)").matches) document.documentElement.classList.add("intro");
+      var force = /[?&]intro\b/.test(location.search); // /?intro la fa rivedere sempre
+      if (force || (!sessionStorage.getItem("rf-intro") && !matchMedia("(prefers-reduced-motion: reduce)").matches)) document.documentElement.classList.add("intro");
     } catch (e) {}
   </script>
 </head>
