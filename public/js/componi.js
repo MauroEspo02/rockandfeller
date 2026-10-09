@@ -64,19 +64,8 @@ const filled = () => order.list.filter((s) => !isEmpty(s));
 const orderTotal = () => filled().reduce((t, s) => t + linePrice(s), 0);
 const orderPieces = () => filled().reduce((n, s) => n + s.qty, 0);
 
-const SIZE = [[0, ""], [1, "Semplice"], [3, "Classico"], [5, "Carico"], [7, "Bomba"], [10, "Mostro"]];
-function nameOf(s, i) {
-  const fillings = s.picks.map((p) => itemsById.get(p.id)).filter((it) => catOf.get(it.id).componi_role === "filling");
-  if (!s.base && !fillings.length) return `Panino ${i + 1}`;
-  const meatCat = cats.find((c) => c.componi_role === "filling");
-  const star = fillings.find((it) => catOf.get(it.id).id === meatCat?.id) || fillings[0];
-  if (!star) return s.base ? itemsById.get(s.base).name : `Panino ${i + 1}`;
-  let size = "";
-  for (const [n, word] of SIZE) if (fillings.length >= n) size = word;
-  const k = count(s, star.id);
-  const doubled = k > 1 ? (k === 2 ? "Doppio " : "Triplo ") : "";
-  return `${doubled}${star.name} ${size}`.trim();
-}
+// Ogni panino si chiama "Prodotto n.1", "Prodotto n.2", … nell'ordine.
+const nameOf = (s, i) => `Prodotto n.${i + 1}`;
 
 function lines(s) {
   const out = [];
@@ -130,7 +119,7 @@ function renderStage() {
   $("tabs").querySelector(".is-on")?.scrollIntoView({ block: "nearest", inline: "nearest" });
 
   const n = orderPieces();
-  $("count").textContent = n ? `${n} ${n === 1 ? "panino" : "panini"}` : "Ordine vuoto";
+  $("count").textContent = n ? `${n} ${n === 1 ? "prodotto" : "prodotti"}` : "Ordine vuoto";
   $("sum").textContent = euro(orderTotal());
   $("go").disabled = !n;
 }
@@ -165,7 +154,7 @@ function renderPicker() {
   const many = order.list.length > 1;
   $("picker").innerHTML = `
     <div class="tools">
-      <p class="tools__title"><strong>${many ? `Panino ${i + 1} di ${order.list.length}` : "Il tuo panino"}</strong><span>Tocca gli ingredienti: il panino si costruisce nell'ordine in cui li scegli. Tocca di nuovo per raddoppiare.</span></p>
+      <p class="tools__title"><strong>${many ? `Prodotto n.${i + 1} di ${order.list.length}` : "Prodotto n.1"}</strong><span>Tocca gli ingredienti: il panino si costruisce nell'ordine in cui li scegli. Tocca di nuovo per raddoppiare.</span></p>
       <div class="tools__row">
         <div class="qty" role="group" aria-label="Quantità di questo panino">
           <button type="button" data-act="minus" ${s.qty <= 1 ? "disabled" : ""} aria-label="Uno in meno">−</button>
@@ -286,7 +275,7 @@ function act(name) {
     order.cur++;
     lastKey = name === "dup" ? "base" : null;
     refresh({ scrollTop: true });
-    flash(name === "dup" ? `Panino ${order.cur + 1}: copia del precedente` : `Panino ${order.cur + 1}: scegli il pane`);
+    flash(name === "dup" ? `Prodotto n.${order.cur + 1}: copia del precedente` : `Prodotto n.${order.cur + 1}: scegli il pane`);
     return;
   } else if (name === "del") {
     if (order.list.length === 1) {
@@ -311,7 +300,7 @@ function openTicket() {
         <p class="ticket__ing">${esc(ingredientsText(s))}${s.qty > 1 ? ` · ${euro(unitPrice(s))} l'uno` : ""}</p></li>`
     )
     .join("");
-  $("ticket-title").textContent = orderPieces() > 1 ? `Il mio ordine · ${orderPieces()} panini` : "Il mio ordine";
+  $("ticket-title").textContent = orderPieces() > 1 ? `Il mio ordine · ${orderPieces()} prodotti` : "Il mio ordine";
   $("ticket-sum").textContent = euro(orderTotal());
   $("ticket-note").textContent = "Mostra questo scontrino alla cassa.";
   const d = $("ticket");
