@@ -1,0 +1,12 @@
+{
+  "name": "rockandfeller",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Sito di Rock and Feller (Caserta Doner Kebab): link tree, menù, componi tu, prodotto del mese, QR dinamici e pannello admin. Cloudflare Pages + D1.",
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/dev-server.mjs",
+    "deploy": "npx wrangler pages deploy public"
+  },
+  "engines": { "node": ">=22.5" }
+}

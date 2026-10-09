@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Panino del mese · Rock and Feller</title>
+  <meta name="description" content="Il panino del mese di Rock and Feller.">
+  <meta name="theme-color" content="#155634">
+  <link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+  <link rel="preload" href="/fonts/alfa-slab-one.woff" as="font" type="font/woff" crossorigin>
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/del-mese.css">
+</head>
+<body class="dm">
+  <header id="sitehead" class="sitehead"></header>
+  <main class="dm__main" id="main"><div class="loading">Un attimo…</div></main>
+  <footer id="sitefoot"></footer>
+  <script src="/js/qrcode.js"></script>
+  <script type="module">
+    import { esc, euro, richText, photo, loadPublic, showError, icon } from "/js/common.js";
+    import { renderHead, renderFoot } from "/js/chrome.js";
+    renderHead("/del-mese");
+    renderFoot();
+    const main = document.getElementById("main");
+    function render({ potm }) {
+      if (!potm || !potm.title) {
+        main.innerHTML = `<section class="dm__empty"><h1 class="display">Il prossimo panino del mese sta arrivando</h1>
+          <p>Intanto dai un'occhiata al menù o componi il tuo.</p>
+          <div class="dm__actions"><a class="dm__btn dm__btn--red" href="/menu">Apri il menù</a><a class="dm__btn" href="/componi">Componi tu</a></div></section>`;
+        return;
+      }
+      document.title = `${potm.title} · ${potm.label} · Rock and Feller`;
+      const veg = potm.tags && potm.tags.includes("veg");
+      main.innerHTML = `
+        ${potm.image_id ? `<img class="dm__photo" src="${photo(potm.image_id)}" alt="${esc(potm.title)}">` : ""}
+        <section class="dm__card">
+          <p class="dm__label display">${esc(potm.label)}${potm.period ? ` · ${esc(potm.period)}` : ""}</p>
+          <h1 class="dm__name">${esc(potm.title)}${veg ? ` <span class="dm__veg">${icon("leaf")}<span class="sr-only">vegetariano</span></span>` : ""}</h1>
+          ${potm.description ? `<p class="dm__desc">${richText(potm.description)}</p>` : ""}
+          ${potm.price_cents != null ? `<p class="dm__price display">${euro(potm.price_cents)}</p>` : ""}
+        </section>
+        <div class="dm__actions"><a class="dm__btn dm__btn--red" href="/menu">Tutto il menù</a><a class="dm__btn" href="/componi">Componi il tuo</a></div>`;
+    }
+    function start() { loadPublic().then(render, () => showError(main, start)); }
+    start();
+  </script>
+</body>
+</html>

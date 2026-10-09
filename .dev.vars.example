@@ -1,0 +1,8 @@
+# Variabili per la prova in locale (node scripts/dev-server.mjs). Copia in .dev.vars se vuoi cambiarle.
+# Su Cloudflare vanno impostate come "Secret" in Settings → Variables and Secrets del progetto Pages.
+
+# Password di emergenza: con utente "admin" e questa password si entra sempre nel pannello.
+ADMIN_PASSWORD=prova-admin-123
+
+# Stringa lunga e casuale per firmare le sessioni.
+SESSION_SECRET=stringa-di-prova-da-cambiare-in-produzione-0123456789

@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Componi tu · Rock and Feller</title>
+  <meta name="description" content="Componi i tuoi panini: scegli pane, carne, formaggi, contorni e salse, il panino si costruisce mentre scegli e il totale si aggiorna.">
+  <meta name="theme-color" content="#155634">
+  <link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+  <link rel="preload" href="/fonts/alfa-slab-one.woff" as="font" type="font/woff" crossorigin>
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/componi.css">
+</head>
+<body class="componi">
+  <header id="sitehead" class="sitehead"></header>
+
+  <div class="layout wrap">
+    <section class="stage" aria-label="Il panino che stai componendo">
+      <div class="stage__top">
+        <p class="stage__name display" id="name" aria-live="polite">Il tuo panino</p>
+        <p class="stage__tag display" id="tag" aria-hidden="true">0,00€</p>
+      </div>
+      <div class="stage__art" id="art"></div>
+      <div class="stage__order" id="tabs" role="tablist" aria-label="I panini dell'ordine"></div>
+    </section>
+
+    <main class="picker" id="picker">
+      <div class="loading">Carico gli ingredienti…</div>
+    </main>
+  </div>
+
+  <footer id="sitefoot"></footer>
+
+  <div class="bar" id="bar">
+    <div class="wrap bar__inner">
+      <div class="bar__total">
+        <span class="bar__label" id="count">Ordine vuoto</span>
+        <span class="bar__sum display" id="sum" aria-live="polite">0,00€</span>
+      </div>
+      <button type="button" class="bar__reset" id="reset">Ricomincia</button>
+      <button type="button" class="bar__go" id="go" disabled>Mostra alla cassa</button>
+    </div>
+  </div>
+
+  <dialog class="ticket" id="ticket" aria-labelledby="ticket-title">
+    <div class="ticket__paper">
+      <div class="ticket__head checker" aria-hidden="true"></div>
+      <img class="ticket__logo" src="/img/logo-dark.svg" alt="Rock and Feller" width="90" height="57">
+      <h2 class="ticket__title display" id="ticket-title">Il mio ordine</h2>
+      <ol class="ticket__list" id="ticket-list"></ol>
+      <p class="ticket__total"><span>Totale</span><span class="display" id="ticket-sum"></span></p>
+      <p class="ticket__note" id="ticket-note"></p>
+      <form method="dialog"><button class="ticket__close" value="close">Chiudi</button></form>
+    </div>
+  </dialog>
+
+  <script src="/js/qrcode.js"></script>
+  <script type="module" src="/js/componi.js"></script>
+</body>
+</html>

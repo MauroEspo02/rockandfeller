@@ -1,0 +1,11 @@
+name = "rockandfeller"
+pages_build_output_dir = "public"
+compatibility_date = "2026-01-01"
+
+# Database D1 con il menù, i link e i QR.
+# Crealo su Cloudflare (Storage & Databases → D1 → Create, nome "rockandfeller-db")
+# e incolla qui sotto il suo "Database ID".
+[[d1_databases]]
+binding = "DB"
+database_name = "rockandfeller-db"
+database_id = "INCOLLA-QUI-IL-DATABASE-ID"

@@ -1,0 +1,199 @@
+/* Gratta e vinci: un biglietto con la cornice a scacchi su fondo verde */
+body.gv {
+  min-height: 100vh;
+  background-color: var(--verde);
+  background-image: radial-gradient(rgba(255, 255, 255, 0.07) 1.5px, transparent 1.6px);
+  background-size: 18px 18px;
+  color: #fff;
+}
+.gv__main {
+  max-width: 460px;
+  margin: 0 auto;
+  padding: max(var(--s5), env(safe-area-inset-top)) var(--gutter) var(--s7);
+  display: grid;
+  justify-items: center;
+  gap: var(--s5);
+}
+.gv__logo img {
+  width: 110px;
+  height: auto;
+}
+
+.ticket-card {
+  position: relative;
+  width: 100%;
+  border-radius: 18px;
+  padding: calc(var(--cell) + 4px);
+  background: #fff;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.3);
+  transform: rotate(-1deg);
+}
+.ticket-card__frame {
+  --cell: 12px;
+  position: absolute;
+  inset: 0;
+  border-radius: 18px;
+  border: 3px solid var(--arancio);
+}
+.ticket-card__inner {
+  position: relative;
+  border-radius: 10px;
+  background: #fff;
+  color: var(--inchiostro);
+  padding: var(--s5) var(--s4) var(--s5);
+  text-align: center;
+  display: grid;
+  gap: var(--s3);
+}
+.ticket-card__title {
+  margin: 0;
+  font-size: clamp(48px, 15vw, 64px);
+  line-height: 0.88;
+  color: var(--rosso-logo);
+  transform: rotate(-2deg);
+}
+.ticket-card__prize {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.4;
+}
+.ticket-card__prize strong {
+  color: var(--verde);
+}
+.ticket-card__prize span {
+  color: var(--grigio);
+}
+
+.scratch {
+  position: relative;
+  margin-top: var(--s2);
+  height: 280px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--crema);
+  border: 2px dashed #d6cfc6;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.scratch__result {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: var(--s4);
+}
+.scratch__layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  cursor: crosshair;
+  touch-action: none;
+  transition: opacity 0.6s ease;
+}
+.scratch__layer.is-gone {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.res {
+  display: grid;
+  gap: var(--s2);
+  justify-items: center;
+}
+.res__big {
+  margin: 0;
+  font-size: clamp(34px, 10vw, 44px);
+  line-height: 0.95;
+}
+.res--win .res__big {
+  color: var(--rosso-logo);
+}
+.res--lose .res__big {
+  color: var(--verde);
+}
+.res__prize {
+  margin: 0;
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 1.35;
+  max-width: 28ch;
+}
+.res__prize span {
+  font-weight: 500;
+  color: var(--grigio);
+}
+.res__code {
+  margin: var(--s1) 0 0;
+  padding: var(--s2) var(--s4);
+  border-radius: 10px;
+  background: var(--verde);
+  color: #fff;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-weight: 700;
+  font-size: clamp(24px, 7vw, 30px);
+  letter-spacing: 0.08em;
+  user-select: all;
+  -webkit-user-select: all;
+}
+.res__exp {
+  margin: 0;
+  font-size: 13px;
+  color: var(--grigio);
+}
+.res__btn {
+  margin-top: var(--s2);
+  display: inline-flex;
+  align-items: center;
+  height: 44px;
+  padding: 0 var(--s4);
+  border-radius: 10px;
+  background: var(--rosso);
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.ticket-card__hint {
+  margin: var(--s1) 0 0;
+  font-size: 14px;
+  color: var(--grigio);
+  min-height: 1.4em;
+}
+.ticket-card__reveal {
+  justify-self: center;
+  border: 0;
+  background: none;
+  color: var(--verde);
+  font-size: 13px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+  padding: var(--s1) var(--s2);
+}
+.gv__rules {
+  margin: var(--s2) 0 0;
+  max-width: 36ch;
+  text-align: center;
+  font-size: 13px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.8);
+}
+.confetti {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 50;
+}
+@media (min-width: 768px) {
+  .gv__main {
+    padding-top: var(--s7);
+    gap: var(--s6);
+  }
+  .gv__logo img {
+    width: 140px;
+  }
+}

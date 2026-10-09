@@ -1,0 +1,369 @@
+/* Pagina iniziale.
+   Telefono: una colonna (logo su verde, panino del mese, bottoni, social, contatti).
+   iPad: colonna centrale più larga, bottoni in griglia da 2.
+   PC: due colonne, a sinistra il pannello verde del brand, a destra panino del mese e bottoni. */
+
+.home {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas: "logo" "potm" "links" "social" "info";
+  background: var(--crema);
+}
+.home__brand,
+.home__main {
+  display: contents;
+}
+
+/* logo su verde con il bordo a scacchi */
+.home__logo {
+  grid-area: logo;
+  position: relative;
+  background: var(--verde);
+  color: #fff;
+  text-align: center;
+  padding: max(var(--s6), env(safe-area-inset-top)) var(--gutter) calc(var(--s6) + var(--cell) * 2);
+}
+.home__logo::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: calc(var(--cell) * 2);
+  border-top: 4px solid var(--arancio);
+  background-color: #fff;
+  background-image: conic-gradient(var(--verde) 25%, #fff 0 50%, var(--verde) 0 75%, #fff 0);
+  background-size: calc(var(--cell) * 2) calc(var(--cell) * 2);
+}
+.home__logo h1 {
+  margin: 0;
+}
+.home__logo img {
+  width: min(200px, 52vw);
+  height: auto;
+  margin: 0 auto;
+}
+.home__tagline {
+  margin: var(--s3) 0 0;
+  font-size: 17px;
+  letter-spacing: 0.02em;
+  color: #fff;
+  opacity: 0.92;
+}
+
+/* panino del mese */
+.home__potm {
+  grid-area: potm;
+  padding: var(--s6) var(--gutter) 0;
+}
+.home__potm:empty {
+  display: none;
+}
+.potm {
+  display: grid;
+  background: #fff;
+  color: var(--inchiostro);
+  text-decoration: none;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 0 0 3px var(--rosso-logo), 0 10px 0 -3px rgba(160, 25, 21, 0.18);
+  transition: transform 0.15s ease;
+}
+.potm:hover {
+  transform: translateY(-2px);
+}
+.potm__photo {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+}
+.potm__body {
+  padding: var(--s5);
+  display: grid;
+  gap: var(--s2);
+}
+.potm__label {
+  margin: 0;
+  color: var(--rosso-logo);
+  font-size: 22px;
+}
+.potm__label span {
+  color: var(--inchiostro);
+  font-size: 0.75em;
+}
+.potm__name {
+  margin: 0;
+  font-weight: 700;
+  font-size: 26px;
+  line-height: 1.1;
+  text-transform: uppercase;
+  color: var(--verde-menu);
+}
+.potm__desc {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  text-transform: uppercase;
+  max-width: 52ch;
+}
+.potm__foot {
+  margin: var(--s2) 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s4);
+}
+.potm__price {
+  font-size: 34px;
+  color: var(--rosso);
+}
+.potm__go {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s2);
+  padding: 10px var(--s4);
+  border-radius: 999px;
+  background: var(--rosso-logo);
+  color: #fff;
+  font-weight: 700;
+  font-size: 15px;
+}
+
+/* bottoni */
+.home__links {
+  grid-area: links;
+  display: grid;
+  gap: var(--s4);
+  padding: var(--s6) var(--gutter) 0;
+}
+
+/* social */
+.home__social {
+  grid-area: social;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--s2);
+  padding: var(--s6) var(--gutter) 0;
+}
+.soc {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s2);
+  height: 44px;
+  padding: 0 var(--s4);
+  border-radius: 999px;
+  border: 2px solid var(--verde);
+  color: var(--verde);
+  background: #fff;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 14px;
+}
+.soc:hover {
+  background: var(--verde);
+  color: #fff;
+}
+.soc__icon {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+}
+
+/* contatti */
+.home__info {
+  grid-area: info;
+  font-style: normal;
+  display: grid;
+  gap: var(--s3);
+  justify-items: center;
+  padding: var(--s5) var(--gutter) 0;
+  font-size: 15px;
+  font-weight: 500;
+}
+.home__info:empty {
+  display: none;
+}
+.home__info p {
+  margin: 0;
+  display: flex;
+  gap: var(--s2);
+  align-items: flex-start;
+}
+.home__info .icon {
+  margin-top: 2px;
+  color: var(--rosso);
+}
+.home__info a {
+  text-underline-offset: 3px;
+}
+.home-page {
+  background: var(--crema);
+}
+.home-page .sitefoot {
+  margin-top: var(--s7);
+}
+
+/* ---------- iPad ---------- */
+@media (min-width: 768px) {
+  .home {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 720px) minmax(0, 1fr);
+    grid-template-areas:
+      "logo logo logo"
+      ". potm ."
+      ". links ."
+      ". social ."
+      ". info .";
+  }
+  .home__logo {
+    padding-top: var(--s7);
+  }
+  .home__logo img {
+    width: 240px;
+  }
+  .home__tagline {
+    font-size: 20px;
+  }
+  .home__potm,
+  .home__links,
+  .home__social,
+  .home__info {
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .home__potm {
+    padding-top: var(--s7);
+  }
+  .potm.has-photo {
+    grid-template-columns: 5fr 6fr;
+  }
+  .potm.has-photo .potm__photo {
+    height: 100%;
+    aspect-ratio: auto;
+  }
+  .potm__body {
+    padding: var(--s6);
+  }
+  .potm__name {
+    font-size: 32px;
+  }
+  .home__links {
+    grid-template-columns: 1fr 1fr;
+  }
+  /* se i bottoni sono dispari, l'ultimo prende tutta la riga */
+  .home__links .btn-big:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+  .home__links .btn-big {
+    min-height: 104px;
+    align-items: flex-end;
+    padding: var(--s4) var(--s5) var(--s5);
+  }
+  .home__links .btn-big__icon {
+    align-self: flex-start;
+  }
+  .home__info {
+    grid-auto-flow: column;
+    justify-content: center;
+    gap: var(--s6);
+  }
+}
+
+/* ---------- PC ---------- */
+@media (min-width: 1100px) {
+  .home {
+    grid-template-columns: minmax(400px, 5fr) minmax(0, 7fr);
+    grid-template-areas: none;
+    min-height: calc(100vh - 40px);
+  }
+  .home__brand {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    background: var(--verde);
+    color: #fff;
+    padding: var(--s8) var(--s7) var(--s7);
+  }
+  /* la scacchiera chiude il pannello sul lato destro */
+  .home__brand::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: calc(var(--cell) * -2);
+    width: calc(var(--cell) * 2);
+    border-left: 4px solid var(--arancio);
+    background-color: #fff;
+    background-image: conic-gradient(var(--verde) 25%, #fff 0 50%, var(--verde) 0 75%, #fff 0);
+    background-size: calc(var(--cell) * 2) calc(var(--cell) * 2);
+    z-index: 1;
+  }
+  .home__logo {
+    padding: 0;
+    background: none;
+    text-align: left;
+  }
+  .home__logo::after {
+    display: none;
+  }
+  .home__logo img {
+    width: 300px;
+    margin: 0;
+  }
+  .home__tagline {
+    font-size: 24px;
+    margin-top: var(--s4);
+  }
+  .home__social {
+    justify-content: flex-start;
+    padding: var(--s7) 0 0;
+    margin-top: auto;
+  }
+  .soc {
+    background: transparent;
+    border-color: rgba(255, 255, 255, 0.5);
+    color: #fff;
+  }
+  .soc:hover {
+    background: #fff;
+    color: var(--verde);
+    border-color: #fff;
+  }
+  .home__info {
+    justify-items: start;
+    grid-auto-flow: row;
+    justify-content: start;
+    padding: var(--s5) 0 0;
+    color: rgba(255, 255, 255, 0.92);
+  }
+  .home__info .icon {
+    color: var(--arancio);
+  }
+  .home__main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: var(--s6);
+    padding: var(--s8) var(--s8) var(--s8) calc(var(--s8) + var(--cell) * 2);
+    max-width: 960px;
+  }
+  .home__potm,
+  .home__links {
+    padding: 0;
+  }
+  .potm__name {
+    font-size: 40px;
+  }
+  .potm__desc {
+    font-size: 15px;
+  }
+  .home__links .btn-big {
+    min-height: 136px;
+  }
+  .home__links .btn-big__label {
+    font-size: 30px;
+  }
+  .home-page .sitefoot {
+    margin-top: 0;
+  }
+}

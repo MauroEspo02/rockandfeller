@@ -1,0 +1,318 @@
+/* Menù.
+   Telefono e iPad: categorie in una barra che scorre in orizzontale, sotto la testata.
+   PC: indice delle categorie fisso a sinistra, menù a destra su due colonne. */
+
+.mlayout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.catnav {
+  position: sticky;
+  top: calc(var(--head-h) + var(--cell));
+  z-index: 10;
+  display: flex;
+  gap: var(--s2);
+  overflow-x: auto;
+  margin: 0 calc(var(--gutter) * -1);
+  padding: var(--s3) var(--gutter);
+  background: rgba(255, 255, 255, 0.97);
+  border-bottom: 1px solid var(--linea);
+  scrollbar-width: none;
+}
+.catnav::-webkit-scrollbar {
+  display: none;
+}
+.catnav a {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  height: 40px;
+  padding: 0 var(--s4);
+  border-radius: 999px;
+  border: 2px solid var(--c);
+  color: var(--c);
+  font-family: var(--font-display);
+  font-size: 16px;
+  text-decoration: none;
+  transition: background 0.15s, color 0.15s;
+}
+.catnav a.is-on,
+.catnav a:hover {
+  background: var(--c);
+  color: #fff;
+}
+
+.menu {
+  min-width: 0;
+  padding-bottom: var(--s6);
+}
+.cat {
+  padding-top: var(--s7);
+}
+.cat__title {
+  margin: 0 0 var(--s5);
+  color: var(--c);
+  font-size: clamp(48px, 13vw, 76px);
+  text-transform: uppercase;
+  line-height: 0.88;
+}
+.cat__note {
+  display: block;
+  margin-top: var(--s2);
+  font-size: clamp(18px, 4.6vw, 24px);
+  text-transform: none;
+  line-height: 1.15;
+}
+
+/* righe semplici (patatine, antipasti, bibite) */
+.rows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  column-gap: var(--s6);
+}
+.row {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s3);
+  padding: var(--s3) 0;
+  border-bottom: 1px solid var(--linea);
+}
+.row__name {
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 16px;
+  line-height: 1.3;
+}
+.row__dots {
+  flex: 1;
+  min-width: var(--s3);
+  border-bottom: 2px dotted #d6cfc6;
+  transform: translateY(-4px);
+}
+.row .price {
+  font-size: 17px;
+}
+
+/* prodotti con ingredienti */
+.fulls {
+  display: grid;
+  gap: var(--s5) var(--s6);
+}
+.rows + .fulls {
+  margin-top: var(--s5);
+}
+.it {
+  display: flex;
+  gap: var(--s4);
+  align-items: flex-start;
+  padding-bottom: var(--s5);
+  border-bottom: 1px solid var(--linea);
+}
+.it__img {
+  width: 96px;
+  height: 96px;
+  border-radius: 12px;
+  object-fit: cover;
+  flex: none;
+  order: 2;
+}
+.it__text {
+  flex: 1;
+  min-width: 0;
+}
+.it__prefix {
+  margin: 0 0 2px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--verde-menu);
+  text-transform: uppercase;
+}
+.it__head {
+  margin: 0;
+  font-size: 20px;
+  line-height: 1.2;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.it__head .price {
+  margin-left: var(--s1);
+}
+.it__name {
+  font-weight: 700;
+}
+.it__pz {
+  font-weight: 500;
+  font-size: 0.8em;
+  text-transform: uppercase;
+}
+.row .it__pz {
+  color: var(--verde-menu);
+}
+.it__star {
+  color: var(--rosso-logo);
+  font-weight: 700;
+  margin-left: 1px;
+}
+.it__veg {
+  display: inline-block;
+  vertical-align: -2px;
+  color: var(--verdino);
+}
+.it__veg .icon {
+  width: 16px;
+  height: 16px;
+}
+.it__desc {
+  margin: var(--s2) 0 0;
+  font-size: 14px;
+  line-height: 1.55;
+  text-transform: uppercase;
+}
+.it__vars {
+  list-style: none;
+  margin: var(--s2) 0 0;
+  padding: 0;
+  font-size: 13px;
+  text-transform: uppercase;
+  display: grid;
+  gap: 2px;
+}
+.it__vars li::before {
+  content: "• ";
+}
+.it__vars .price {
+  font-weight: 500;
+}
+
+.badge {
+  display: inline-block;
+  vertical-align: 3px;
+  margin-left: var(--s2);
+  padding: 2px var(--s2);
+  border-radius: 999px;
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+.badge--potm {
+  background: var(--rosso-logo);
+  color: #fff;
+}
+.badge--off {
+  background: var(--inchiostro);
+  color: #fff;
+}
+.is-off .it__name,
+.is-off .row__name,
+.is-off .it__desc {
+  opacity: 0.45;
+}
+.is-off .it__head .price,
+.row.is-off > .price {
+  opacity: 0.45;
+  text-decoration: line-through;
+}
+:target {
+  animation: flash 1.8s ease-out;
+}
+@keyframes flash {
+  0%,
+  30% {
+    background: #fff1c9;
+  }
+}
+
+.menu__foot {
+  margin-top: var(--s8);
+  padding: var(--s6) var(--s5);
+  border-radius: 16px;
+  background: var(--crema);
+  text-align: center;
+}
+.seasonal,
+.allergeni {
+  margin: var(--s3) 0 0;
+  font-size: 14px;
+  color: var(--grigio);
+}
+.cta {
+  margin: var(--s5) auto 0;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s3);
+  min-height: 60px;
+  padding: 0 var(--s5);
+  border-radius: 12px;
+  background: var(--arancio);
+  color: var(--inchiostro);
+  text-decoration: none;
+  font-size: 22px;
+  box-shadow: inset 0 -5px 0 rgba(0, 0, 0, 0.22);
+}
+.cta:active {
+  transform: translateY(3px);
+}
+
+/* ---------- iPad ---------- */
+@media (min-width: 768px) {
+  .rows {
+    grid-template-columns: 1fr 1fr;
+  }
+  .fulls {
+    grid-template-columns: 1fr 1fr;
+  }
+  .catnav {
+    justify-content: safe center;
+  }
+}
+
+/* ---------- PC ---------- */
+@media (min-width: 1100px) {
+  .mlayout {
+    grid-template-columns: 220px minmax(0, 1fr);
+    gap: var(--s8);
+  }
+  .catnav {
+    top: calc(var(--head-h) + var(--cell) + var(--s7));
+    align-self: start;
+    flex-direction: column;
+    gap: var(--s1);
+    overflow: visible;
+    margin: var(--s7) 0 0;
+    padding: 0;
+    background: none;
+    border: 0;
+  }
+  .catnav a {
+    height: 48px;
+    border: 0;
+    border-left: 4px solid transparent;
+    border-radius: 0 10px 10px 0;
+    padding: 0 var(--s4);
+    font-size: 22px;
+  }
+  .catnav a.is-on,
+  .catnav a:hover {
+    background: color-mix(in srgb, var(--c) 10%, white);
+    color: var(--c);
+    border-left-color: var(--c);
+  }
+  .cat:first-child {
+    padding-top: var(--s7);
+  }
+  .cat__title {
+    font-size: 88px;
+  }
+  .fulls {
+    gap: var(--s6) var(--s7);
+  }
+  .rows {
+    column-gap: var(--s7);
+  }
+}
