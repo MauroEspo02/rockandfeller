@@ -32,7 +32,6 @@ function renderPotm(p) {
 }
 
 function render({ site, links, potm }) {
-  if (site.tagline) $("tagline").textContent = site.tagline;
   $("potm").innerHTML = renderPotm(potm);
 
   $("links").innerHTML = links

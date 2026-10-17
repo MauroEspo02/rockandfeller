@@ -73,7 +73,6 @@ export async function renderFoot() {
     <div class="sitefoot__legal">
       <div class="wrap">
         <span>${esc(site.name || "Rock and Feller")}${site.address ? ` · ${site.maps_url ? `<a href="${esc(site.maps_url)}" target="_blank" rel="noopener">${esc(site.address)}</a>` : esc(site.address)}` : ""}</span>
-        <span>${esc(site.tagline || "")}</span>
       </div>
     </div>`;
 }
